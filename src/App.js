@@ -24,8 +24,6 @@ function App() {
     const [cameraResolution, setCameraResolution] = useState("default")
     const [mode, setMode] = useState("live")
     const [codec, setCodec] = useState("h264")
-    const [mutedAudio, setMutedAudio] = useState(false)
-    const [mutedVideo, setMutedVideo] = useState(false)
     const [availableCamera, setAvailableCamera] = useState([])
     const [availableMicrophone, setAvailableMicrophone] = useState([])
     const [localStream, setLocalStream] = useState(null)
@@ -122,13 +120,13 @@ function App() {
                         kind: item.kind,
                     }
                 })
-            var videos = []
-            var audios = []
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i]
-                if ("videoinput" == item.kind) {
-                    var name = item.label
-                    var value = item.deviceId
+            let videos = []
+            let audios = []
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i]
+                if ("videoinput" === item.kind) {
+                    let name = item.label
+                    let value = item.deviceId
                     if (!name) {
                         name = "camera-" + videos.length
                     }
@@ -138,9 +136,9 @@ function App() {
                         kind: item.kind
                     })
                 }
-                if ("audioinput" == item.kind) {
-                    var name = item.label
-                    var value = item.deviceId
+                if ("audioinput" === item.kind) {
+                    let name = item.label
+                    let value = item.deviceId
                     if (!name) {
                         name = "microphone-" + audios.length
                     }
@@ -179,7 +177,7 @@ function App() {
     const validator = (params, fields) => {
         var keys = Object.keys(params)
         for (let key of keys) {
-            if (fields.indexOf(key) != -1) {
+            if (fields.indexOf(key) !== -1) {
                 if (!params[key]) {
                     notification.error({
                         message: `Please Enter ${key}`,
@@ -383,7 +381,7 @@ function App() {
             await rtc.localStream.close()
             for (let i = 0; i < rtc.remoteStreams.length; i++) {
                 let stream = rtc.remoteStreams.shift()
-                let id = stream.getId()
+                // let id = stream.getId()
                 if (stream.isPlaying()) {
                     stream.stop()
                 }
@@ -538,41 +536,6 @@ function App() {
 
     const handleChangeResolution = (value) => {
         setCameraResolution(value)
-    }
-
-    const addView = (id) => {
-        // let id = stream.getId()
-        return (
-            <div id={`remote_video_panel_${id}`} className="video-view">
-                <div id={`remote_video_${id}`} className="video-placeholder"></div>
-                <div id={`remote_video_info_${id}`} className={`video-profile `}></div>
-                <div id={`video_autoplay_${id}`} className="autoplay-fallback hide"></div>
-            </div>
-        )
-    }
-
-    // const removeView = (id) => {
-    //     if ($("#remote_video_panel_" + id)[0]) {
-    //         $("#remote_video_panel_" + id).remove()
-    //     }
-    // }
-
-    const handleMuteAudio = () => {
-        if (!mutedAudio) {
-            localStream.muteAudio();
-        } else {
-            localStream.unmuteAudio();
-        }
-        setMutedAudio(!mutedAudio);
-    }
-
-    const handleMuteVideo = () => {
-        if (!mutedVideo) {
-            localStream.muteVideo();
-        } else {
-            localStream.unmuteVideo();
-        }
-        setMutedVideo(!mutedVideo);
     }
 
     return (
