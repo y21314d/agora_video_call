@@ -21,7 +21,7 @@ function App() {
     const [uid, setUID] = useState("")
     const [camera, setCamera] = useState({})
     const [microphone, setMicrophone] = useState({})
-    const [cameraResolution, setCameraResolution] = useState("default")
+    const [cameraResolution, setCameraResolution] = useState({})
     const [mode, setMode] = useState("live")
     const [codec, setCodec] = useState("h264")
     const [availableCamera, setAvailableCamera] = useState([])
@@ -159,8 +159,8 @@ function App() {
             { name: "channel", value: channel },
             { name: "token", value: token },
             { name: "uid", value: uid },
-            { name: "cameraId", value: camera },
-            { name: "microphoneId", value: microphone },
+            { name: "camera", value: camera },
+            { name: "microphone", value: microphone },
             { name: "cameraResolution", value: cameraResolution },
             { name: "mode", value: mode },
             { name: "codec", value: codec }
@@ -248,8 +248,8 @@ function App() {
                 audio: true,
                 video: true,
                 screen: false,
-                microphoneId: option.microphoneId.value,
-                cameraId: option.cameraId.value
+                microphoneId: option.microphoneId,
+                cameraId: option.cameraId
             })
 
             rtc.localStream = localStream
@@ -526,16 +526,16 @@ function App() {
 
     const handleChangeCamera = (value) => {
         // localStream.switchDevice("video", device.cameraId)
-        setCamera(value)
+        setCamera({...camera , value:value})
     }
 
     const handleChangeMicrophone = (value) => {
         // localStream.switchDevice("audio", device.microphoneId)
-        setMicrophone(value)
+        setMicrophone({...microphone, value:value})
     }
 
     const handleChangeResolution = (value) => {
-        setCameraResolution(value)
+        setCameraResolution({...cameraResolution , value:value})
     }
 
     return (
