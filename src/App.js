@@ -29,6 +29,8 @@ function App() {
     const [localStream, setLocalStream] = useState(null)
     const [remoteStreams, setRemoteStreams] = useState([])
     const [clientInstance, setClientInstance] = useState(null)
+    const [mutedAudio, setMutedAudio] = useState(false);
+    const [mutedVideo, setMutedVideo] = useState(false);
 
 
     const resolutions = [
@@ -106,6 +108,25 @@ function App() {
         if (validator(params, fields)) {
             await leave(rtc)
         }
+    }
+
+
+    const handleMuteAudio = () => {
+        if (!mutedAudio) {
+            localStream.muteAudio();
+        } else {
+            localStream.unmuteAudio();
+        }
+        setMutedAudio(!mutedAudio);
+    }
+
+    const handleMuteVideo = () => {
+        if (!mutedVideo) {
+            localStream.muteVideo();
+        } else {
+            localStream.unmuteVideo();
+        }
+        setMutedVideo(!mutedVideo);
     }
 
     const getDevices = (next) => {
@@ -526,16 +547,16 @@ function App() {
 
     const handleChangeCamera = (value) => {
         // localStream.switchDevice("video", device.cameraId)
-        setCamera({...camera , value:value})
+        setCamera({ ...camera, value: value })
     }
 
     const handleChangeMicrophone = (value) => {
         // localStream.switchDevice("audio", device.microphoneId)
-        setMicrophone({...microphone, value:value})
+        setMicrophone({ ...microphone, value: value })
     }
 
     const handleChangeResolution = (value) => {
-        setCameraResolution({...cameraResolution , value:value})
+        setCameraResolution({ ...cameraResolution, value: value })
     }
 
     return (
@@ -679,6 +700,14 @@ function App() {
                         </div>
                     </div>
                     <div className="video-block box">
+                        <div>
+                            <Button disabled={!localStream? true: false} onClick={handleMuteAudio}>
+                                {mutedAudio ? "Unmute Audio" : "Mute Audio"}
+                            </Button>
+                            <Button disabled={!localStream? true: false} onClick={handleMuteVideo}>
+                                {mutedVideo ? "Unmute Video" : "Mute Video"}
+                            </Button>
+                        </div>
                         <div id="video" className="video-grid" >
                             <div className="video-view">
                                 <div id="local_stream" className="video-placeholder"></div>
